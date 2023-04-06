@@ -1,0 +1,8 @@
+{
+    "autoload" : {
+        "psr-4": {
+            "Src\\": "src/"
+        },
+        "files": ["config/Config.php", "config/Sql.php"]
+    }
+}

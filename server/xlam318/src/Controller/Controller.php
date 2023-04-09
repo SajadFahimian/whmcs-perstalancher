@@ -9,8 +9,7 @@ use Src\System\DatabaseConnector;
 use Src\Functions\Replacer;
 
 use \Exception;
-
-
+use Src\Functions\Deleter;
 
 class Controller
 {
@@ -59,6 +58,8 @@ class Controller
                 return $this->processRequestSeedDB($data);
             case 'config':
                 return $this->processRequestConfig($data);
+            case 'delete':
+                return $this->processRequestDelete($data);
         }
     }
 
@@ -126,6 +127,22 @@ class Controller
         return $this->createResponse('HTTP/1.1 200 OK', array(
             'status' => 'success',
             'message' => 'The store has been configured successfully.'
+        ));
+    }
+
+    private function processRequestDelete(array $data)
+    {
+        $result = Deleter::deleteDirectory(PUBLIC_DIR) && Deleter::deleteDirectory(UNPUBLIC_DIR);
+
+        if (!$result) {
+            return $this->createResponse('HTTP/1.1 500 Internal Server Error', array(
+                'status' => 'error',
+                'message' => 'Cannot delete all files.'
+            ));
+        }
+        return $this->createResponse('HTTP/1.1 200 OK', array(
+            'status' => 'success',
+            'message' => 'All files have been deleted successfully.'
         ));
     }
 }

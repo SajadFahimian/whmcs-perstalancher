@@ -156,6 +156,10 @@ class Controller
                 throw new Exception('Unable to decompress the file.');
             }
             Deleter::deleteDirectory(ZIP_FILE);
+            return $this->createResponse('HTTP/1.1 200 OK', array(
+                'status' => 'success',
+                'message' => 'The file was extracted successfully.'
+            ));
         } catch (Exception $e) {
             return $this->createResponse('HTTP/1.1 500 Internal Server Error', array(
                 'status' => 'error',

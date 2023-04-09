@@ -6,6 +6,7 @@ namespace Src\Controller;
 use Src\Validator\Validator;
 use Src\Functions\EncryptDecrypt;
 use Src\System\DatabaseConnector;
+use Src\Functions\Replacer;
 
 use \Exception;
 
@@ -56,10 +57,11 @@ class Controller
         switch ($command) {
             case 'seed_db':
                 return $this->processRequestSeedDB($data);
+            case 'config':
+                return $this->processRequestConfig($data);
         }
     }
 
-    // TODO
     private function processRequestSeedDB(array $data)
     {
         try {
@@ -101,6 +103,29 @@ class Controller
         return $this->createResponse('HTTP/1.1 200 OK', array(
             'status' => 'success',
             'message' => 'The data was entered into the database.'
+        ));
+    }
+
+    private function processRequestConfig(array $data)
+    {
+        $replacement = array(
+            'database_name' => "\t\t'database_name' => '" . $data['database'] . "',\n",
+            'database_user' => "\t\t'database_user' => '" . $data['username'] . "',\n",
+            'database_password' => "\t\t'database_password' => '" . $data['password'] . "',\n"
+        );
+
+        $replacer = new Replacer($replacement);
+
+        if (!$replacer->replace()) {
+
+            return $this->createResponse('HTTP/1.1 500 Internal Server Error', array(
+                'status' => 'error',
+                'message' => 'Unable to configure the store.'
+            ));
+        }
+        return $this->createResponse('HTTP/1.1 200 OK', array(
+            'status' => 'success',
+            'message' => 'The store has been configured successfully.'
         ));
     }
 }

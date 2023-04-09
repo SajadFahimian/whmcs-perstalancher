@@ -3,13 +3,10 @@
 namespace Src\System;
 
 use \PDO;
-use \PDOException;
 
 class DatabaseConnector
 {
     private $dbConnection = null;
-    public $status;
-    public $message = null;
 
     public function __construct(
         String $database,
@@ -19,24 +16,17 @@ class DatabaseConnector
         String $port = '3306'
     ) {
 
-        try {
-            $this->dbConnection = new PDO(
-                "mysql:host=$host;port=$port;dbname=$database",
-                $username,
-                $password
-            );
-            $this->status = 'success';
-        } catch (PDOException $e) {
-            $this->status = 'error';
-            $this->message = $e->getMessage();
-        }
+
+        $this->dbConnection = new PDO(
+            "mysql:host=$host;port=$port;dbname=$database",
+            $username,
+            $password
+        );
     }
 
-    public function getConnection() {
-        if ($this->status === 'success') {
-            $this->dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return $this->dbConnection;
-        }
-        return $this->status;
+    public function getConnection()
+    {
+        $this->dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $this->dbConnection;
     }
 }

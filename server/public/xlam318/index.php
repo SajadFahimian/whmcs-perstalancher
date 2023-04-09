@@ -31,7 +31,7 @@ if ($requestMethod === 'GET') {
     $response = $controller->processRequest();
 
     header($response['status_code_header']);
-    if ($response['body']) {
+    if (isset($response['body'])) {
         echo $response['body'];
     }
 

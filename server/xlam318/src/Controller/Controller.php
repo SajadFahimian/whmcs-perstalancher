@@ -5,6 +5,10 @@ namespace Src\Controller;
 
 use Src\Validator\Validator;
 use Src\Functions\EncryptDecrypt;
+use Src\System\DatabaseConnector;
+
+use \PDO;
+use \PDOException;
 
 
 
@@ -33,7 +37,7 @@ class Controller
         return $response;
     }
 
-    public function processRequest()
+    public function processRequest(): array
     {
         if (!$this->data) {
             return $this->createResponse('HTTP/1.1 400 Bad Request', array(
@@ -50,14 +54,24 @@ class Controller
         }
 
 
-        switch($command) {
+        switch ($command) {
             case 'seed_db':
                 return $this->processRequestSeedDB($data);
         }
     }
 
-    private function processRequestSeedDB(array $data) {
-        
-
+    private function processRequestSeedDB(array $data)
+    {
+        try {
+            // TODO
+            $dbConnection = new DatabaseConnector($data['database'], $data['username'], $data['password'], '', '3307');
+            $dbConnection = $dbConnection->getConnection();
+            
+        } catch (PDOException $e) {
+            return $this->createResponse('HTTP/1.1 500 Internal Server Error', array(
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ));
+        }
     }
 }

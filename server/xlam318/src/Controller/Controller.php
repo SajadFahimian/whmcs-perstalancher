@@ -132,6 +132,7 @@ class Controller
 
     private function processRequestDelete(array $data)
     {
+        try {
         $result = Deleter::deleteDirectory(PUBLIC_DIR) && Deleter::deleteDirectory(UNPUBLIC_DIR);
 
         if (!$result) {
@@ -144,5 +145,11 @@ class Controller
             'status' => 'success',
             'message' => 'All files have been deleted successfully.'
         ));
+    } catch (Exception $e) {
+        return $this->createResponse('HTTP/1.1 500 Internal Server Error', array(
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ));
+    }
     }
 }

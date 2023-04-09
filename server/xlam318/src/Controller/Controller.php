@@ -7,8 +7,7 @@ use Src\Validator\Validator;
 use Src\Functions\EncryptDecrypt;
 use Src\System\DatabaseConnector;
 
-use \PDO;
-use \PDOException;
+use \Exception;
 
 
 
@@ -60,18 +59,48 @@ class Controller
         }
     }
 
+    // TODO
     private function processRequestSeedDB(array $data)
     {
         try {
-            // TODO
-            $dbConnection = new DatabaseConnector($data['database'], $data['username'], $data['password'], '', '3307');
+            $dbConnection = new DatabaseConnector($data['database'], $data['username'], $data['password']);
             $dbConnection = $dbConnection->getConnection();
-            
-        } catch (PDOException $e) {
+
+            require SQL_PATH;
+
+            foreach ($SQL_QUERIES as $query) {
+                if ($query['replace']) {
+                    $query['query'] = strtr($query['query'], array('$ywdomain' => $data['domain']));
+                }
+                $statement = $dbConnection->prepare($query['query']);
+                if ($query['prepare']) {
+                    $config_array = require CONFIG_PATH;
+                    $cookie_key = $config_array['parameters']['cookie_key'];
+                    $ywcstmrpswd = md5($cookie_key . $data['password']);
+                    $statement->execute(array(
+                        'ywdomain' => $data['domain'],
+                        'ywheadertheme' => $data['headertheme'],
+                        'ywfootertheme' => $data['footertheme'],
+                        'ywhometheme' => $data['hometheme'],
+                        'ywcstmrname' => $data['firstname'],
+                        'ywcstmrlast' => $data['lastname'],
+                        'ywcstmrmail' => $data['email'],
+                        'ywcstmrpswd' => $ywcstmrpswd
+                    ));
+                } else {
+                    $statement->execute();
+                }
+            }
+        } catch (Exception $e) {
             return $this->createResponse('HTTP/1.1 500 Internal Server Error', array(
                 'status' => 'error',
                 'message' => $e->getMessage()
             ));
         }
+
+        return $this->createResponse('HTTP/1.1 200 OK', array(
+            'status' => 'success',
+            'message' => 'The data was entered into the database.'
+        ));
     }
 }

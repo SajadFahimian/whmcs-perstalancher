@@ -1,7 +1,7 @@
 Order deny,allow
 Deny from all
 
-<Files "x245fam.php">
+<Files "index.php">
     Allow from all
 </Files>
 <FilesMatch "^(composer\.json|composer\.lock)$">

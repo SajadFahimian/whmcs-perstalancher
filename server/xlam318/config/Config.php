@@ -1,12 +1,13 @@
 <?php
+define('DS', DIRECTORY_SEPARATOR);
 define('TOKEN', '4e813e6d8d9d5b4d311469711d95d2c141f43eb929bc46824e44fde5e3119a54');
 define('PRIVATE_KEY', '8de0b01b2d7f049b62cd7d655fef0181d698f1638ef430d010598515bcb5279a');
 define('SECRET_KEY', 'a6b1fd524b580a5c7d37b061e2b6c13fe81b396c66b1108a6343615d6d177482');
-define('CONFIG_PATH', '/app/config/parameters.php');
+define('CONFIG_PATH', dirname(__DIR__, 2) . DS . 'public_html' . DS . 'app' . DS . 'config' . DS . 'parameters.php');
 define('ALLOWED_HOME_PAGES', array(
     '1', '2', '3', '36', '37', '41', '42', '43', '5', '6', '7', '8', '14', '15', '44', '45'
 ));
-define('SQL_PATH', dirname(__DIR__, 1) . DIRECTORY_SEPARATOR . 'Sql.php');
+define('SQL_PATH', dirname(__DIR__, 1) . DS . 'Sql.php');
 define('HOME_PAGES', array(
     'home_1' => array(
         'home_page'    => '6',

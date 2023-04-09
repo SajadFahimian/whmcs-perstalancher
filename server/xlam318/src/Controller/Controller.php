@@ -53,7 +53,6 @@ class Controller
         switch($command) {
             case 'seed_db':
                 return $this->processRequestSeedDB($data);
-                break;
         }
     }
 

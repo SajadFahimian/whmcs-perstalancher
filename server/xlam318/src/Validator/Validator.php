@@ -12,23 +12,20 @@ class Validator
 
     static private function validateData(string $command, array $data)
     {
-        $validated_data = null;
+
         switch ($command) {
             case 'seed_db':
-                $validated_data = self::validateSeedDB($data);
-                break;
+                return self::validateSeedDB($data);
+
 
             case 'config':
-                $validated_data = self::validateConfig($data);
-                break;
+                return self::validateConfig($data);
+
             case 'delete':
             case 'extract':
-                $validated_data = self::validateGeneral($data);
-                break;
-
-
+                return self::validateGeneral($data);
         }
-        return $validated_data;
+        return null;
     }
     static private function validateSeedDB(array $data)
     {
@@ -109,13 +106,12 @@ class Validator
 
         if ($command && in_array($command, self::allowed_commands) && $data && is_array($data)) {
             $return_data = self::validateData($command, $data);
-        } 
+        }
 
         if ($return_data) {
             $validated_data['data'] = $return_data;
             $validated_data['command'] = $command;
-
-        } 
+        }
         return $validated_data;
     }
 }

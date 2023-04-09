@@ -7,9 +7,9 @@ use Src\Validator\Validator;
 use Src\Functions\EncryptDecrypt;
 use Src\System\DatabaseConnector;
 use Src\Functions\Replacer;
+use Src\Functions\Deleter;
 
 use \Exception;
-use Src\Functions\Deleter;
 
 class Controller
 {
@@ -133,23 +133,17 @@ class Controller
     private function processRequestDelete(array $data)
     {
         try {
-        $result = Deleter::deleteDirectory(PUBLIC_DIR) && Deleter::deleteDirectory(UNPUBLIC_DIR);
-
-        if (!$result) {
+            Deleter::deleteDirectory(PUBLIC_DIR);
+            Deleter::deleteDirectory(UNPUBLIC_DIR);
+            return $this->createResponse('HTTP/1.1 200 OK', array(
+                'status' => 'success',
+                'message' => 'All files have been deleted successfully.'
+            ));
+        } catch (Exception $e) {
             return $this->createResponse('HTTP/1.1 500 Internal Server Error', array(
                 'status' => 'error',
-                'message' => 'Cannot delete all files.'
+                'message' => $e->getMessage()
             ));
         }
-        return $this->createResponse('HTTP/1.1 200 OK', array(
-            'status' => 'success',
-            'message' => 'All files have been deleted successfully.'
-        ));
-    } catch (Exception $e) {
-        return $this->createResponse('HTTP/1.1 500 Internal Server Error', array(
-            'status' => 'error',
-            'message' => $e->getMessage()
-        ));
-    }
     }
 }

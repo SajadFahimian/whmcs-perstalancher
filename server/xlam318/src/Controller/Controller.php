@@ -8,6 +8,7 @@ use Src\Functions\EncryptDecrypt;
 use Src\System\DatabaseConnector;
 use Src\Functions\Replacer;
 use Src\Functions\Deleter;
+use Src\Functions\Extractor;
 
 use \Exception;
 
@@ -60,6 +61,8 @@ class Controller
                 return $this->processRequestConfig($data);
             case 'delete':
                 return $this->processRequestDelete($data);
+            case 'extract':
+                return $this->processRequestExtract($data);
         }
     }
 
@@ -139,6 +142,20 @@ class Controller
                 'status' => 'success',
                 'message' => 'All files have been deleted successfully.'
             ));
+        } catch (Exception $e) {
+            return $this->createResponse('HTTP/1.1 500 Internal Server Error', array(
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ));
+        }
+    }
+    private function processRequestExtract(array $data)
+    {
+        try {
+            if (!Extractor::extract(ZIP_FILE)) {
+                throw new Exception('Unable to decompress the file.');
+            }
+            Deleter::deleteDirectory(ZIP_FILE);
         } catch (Exception $e) {
             return $this->createResponse('HTTP/1.1 500 Internal Server Error', array(
                 'status' => 'error',

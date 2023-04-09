@@ -40,12 +40,25 @@ class Controller
                 'status' => 'error',
                 'message' => 'The request body is invalid.',
             ));
-        } 
-        // TODO
-        return $this->createResponse('HTTP/1.1 200 OK', array(
-            'status' => 'success',
-            'message' => '',
-            'data' => $this->data
-        ));
+        }
+
+        $data = $this->data['data'];
+        $command = $this->data['command'];
+
+        if (hash('SHA256', $data['token']) !== hash('SHA256', TOKEN)) {
+            return $this->createResponse('HTTP/1.1 403 Forbidden');
+        }
+
+
+        switch($command) {
+            case 'seed_db':
+                return $this->processRequestSeedDB($data);
+                break;
+        }
+    }
+
+    private function processRequestSeedDB(array $data) {
+        
+
     }
 }

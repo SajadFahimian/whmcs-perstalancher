@@ -7,7 +7,7 @@ use Src\Functions\EncryptDecrypt;
 class Validator
 {
 
-    const allowed_commands = array('seed_db', 'config', 'delete', 'extract');
+    const allowed_commands = array('seed_db', 'config', 'delete');
 
 
     static private function validateData(string $command, array $data)
@@ -22,8 +22,7 @@ class Validator
                 return self::validateConfig($data);
 
             case 'delete':
-            case 'extract':
-                return self::validateGeneral($data);
+                return self::validateDelete($data);
         }
         return null;
     }
@@ -79,7 +78,7 @@ class Validator
 
         return $validated_data;
     }
-    static private function validateGeneral(array $data)
+    static private function validateDelete(array $data)
     {
         $validated_data = null;
 

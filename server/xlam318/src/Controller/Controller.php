@@ -135,6 +135,7 @@ class Controller
         try {
             Deleter::deleteDirectory(PUBLIC_DIR);
             Deleter::deleteDirectory(UNPUBLIC_DIR);
+            Deleter::deleteDirectory(ARCHIVE_FILE);
             return $this->createResponse('HTTP/1.1 200 OK', array(
                 'status' => 'success',
                 'message' => 'All files have been deleted successfully.'

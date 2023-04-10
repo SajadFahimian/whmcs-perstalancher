@@ -10,7 +10,7 @@ define('ALLOWED_HOME_PAGES', array(
 define('SQL_PATH', dirname(__DIR__, 1) . DS . 'Sql.php');
 define('PUBLIC_DIR', dirname(__DIR__, 2) . DS . 'public_html' . DS . 'xlam318');
 define('UNPUBLIC_DIR', dirname(__DIR__, 1));
-define('ZIP_FILE', dirname(__DIR__, 2) . DS . 'public_html' . DS . 'files.zip');
+define('ARCHIVE_FILE', dirname(__DIR__, 2) . DS . 'files.tar.gz');
 define('HOME_PAGES', array(
     'home_1' => array(
         'home_page'    => '6',

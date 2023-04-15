@@ -69,30 +69,38 @@ class Controller
             $dbConnection = new DatabaseConnector($data['database'], $data['username'], $data['password']);
             $dbConnection = $dbConnection->getConnection();
 
-            require SQL_PATH;
+            $query = file_get_contents(SQL_DIR . DS . 'query' . $data['query'] . '.sql');
 
-            foreach ($SQL_QUERIES as $query) {
-                if ($query['replace']) {
-                    $query['query'] = strtr($query['query'], array('$ywdomain' => $data['domain']));
-                }
-                $statement = $dbConnection->prepare($query['query']);
-                if ($query['prepare']) {
-                    $config_array = require CONFIG_PATH;
-                    $cookie_key = $config_array['parameters']['cookie_key'];
-                    $ywcstmrpswd = md5($cookie_key . $data['password']);
-                    $statement->execute(array(
-                        'ywdomain' => $data['domain'],
-                        'ywheadertheme' => $data['headertheme'],
-                        'ywfootertheme' => $data['footertheme'],
-                        'ywhometheme' => $data['hometheme'],
-                        'ywcstmrname' => $data['firstname'],
-                        'ywcstmrlast' => $data['lastname'],
-                        'ywcstmrmail' => $data['email'],
-                        'ywcstmrpswd' => $ywcstmrpswd
-                    ));
-                } else {
-                    $statement->execute();
-                }
+            if (in_array($data['query'], QUERY_REPLACE)) {
+                $query = strtr($query, array('$ywdomain' => $data['domain']));
+                $statement = $dbConnection->prepare($query);
+                $statement->execute();
+            } elseif ($data['query'] == '8') {
+                $statement = $dbConnection->prepare($query);
+                $statement->execute(array(
+                    'ywdomain' => $data['domain'],
+                    'ywheadertheme' => $data['headertheme'],
+                    'ywfootertheme' => $data['footertheme'],
+                    'ywhometheme' => $data['hometheme']
+                ));
+            } elseif ($data['query'] == '9') {
+                $config_array = require CONFIG_PATH;
+                $cookie_key = $config_array['parameters']['cookie_key'];
+                $ywcstmrpswd = md5($cookie_key . $data['password']);
+                $statement = $dbConnection->prepare($query);
+                $statement->execute(array(
+                    'ywcstmrname' => $data['firstname'],
+                    'ywcstmrlast' => $data['lastname'],
+                    'ywcstmrmail' => $data['email'],
+                    'ywcstmrpswd' => $ywcstmrpswd
+                ));
+            } elseif ($data['query'] == '10') {
+                $statement = $dbConnection->prepare($query);
+                $statement->execute(array(
+                    'ywdomain' => $data['domain']
+                ));
+            } else {
+                throw new Exception('I have no such query: query' . $data['query'] . '.sql');
             }
         } catch (Exception $e) {
             return $this->createResponse('HTTP/1.1 500 Internal Server Error', array(
@@ -136,6 +144,7 @@ class Controller
             Deleter::deleteDirectory(PUBLIC_DIR);
             Deleter::deleteDirectory(UNPUBLIC_DIR);
             Deleter::deleteDirectory(ARCHIVE_FILE);
+            Deleter::deleteDirectory(ARCHIVE_DATABASE);
             return $this->createResponse('HTTP/1.1 200 OK', array(
                 'status' => 'success',
                 'message' => 'All files have been deleted successfully.'

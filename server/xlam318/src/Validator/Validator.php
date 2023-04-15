@@ -35,28 +35,54 @@ class Validator
             isset($data['database']) &&
             isset($data['username']) &&
             isset($data['password']) &&
-            isset($data['domain']) &&
-            isset($data['theme']) &&
-            isset($data['firstname']) &&
-            isset($data['lastname']) &&
-            isset($data['email']) &&
-            in_array($data['theme'], ALLOWED_HOME_PAGES)
+            isset($data['query'])
         ) {
+
+            if (
+                in_array($data['query'], QUERY_REPLACE) &&
+                isset($data['domain'])
+            ) {
+                $validated_data['domain'] = $data['domain'];
+            } elseif (
+                $data['query'] == '8' &&
+                isset($data['domain']) &&
+                isset($data['theme']) &&
+                in_array($data['theme'], ALLOWED_HOME_PAGES)
+            ) {
+                $validated_data['domain'] = $data['domain'];
+                $theme = HOME_PAGES['home_' . $data['theme']];
+
+                $validated_data['headertheme'] = $theme['header_style'];
+                $validated_data['footertheme'] = $theme['footer_style'];
+                $validated_data['hometheme'] = $theme['home_page'];
+            } elseif (
+                $data['query'] == '9' &&
+                isset($data['firstname']) &&
+                isset($data['lastname']) &&
+                isset($data['email'])
+
+            ) {
+                $validated_data['firstname'] = $data['firstname'];
+                $validated_data['lastname'] = $data['lastname'];
+                $validated_data['email'] = $data['email'];
+            } elseif (
+                $data['query'] == '10' &&
+                isset($data['domain'])
+
+            ) {
+                $validated_data['domain'] = $data['domain'];
+            } else {
+                return null;
+            }
+
             $validated_data['token'] = $data['token'];
             $validated_data['database'] = $data['database'];
             $validated_data['username'] = $data['username'];
             $validated_data['password'] = $data['password'];
-            $validated_data['domain'] = $data['domain'];
-            $validated_data['firstname'] = $data['firstname'];
-            $validated_data['lastname'] = $data['lastname'];
-            $validated_data['email'] = $data['email'];
-
-            $theme = HOME_PAGES['home_' . $data['theme']];
-
-            $validated_data['headertheme'] = $theme['header_style'];
-            $validated_data['footertheme'] = $theme['footer_style'];
-            $validated_data['hometheme'] = $theme['home_page'];
+            $validated_data['query'] = $data['query'];
         }
+
+
 
         return $validated_data;
     }

@@ -7,10 +7,13 @@ define('CONFIG_PATH', dirname(__DIR__, 2) . DS . 'public_html' . DS . 'app' . DS
 define('ALLOWED_HOME_PAGES', array(
     '1', '2', '3', '36', '37', '41', '42', '43', '5', '6', '7', '8', '14', '15', '44', '45'
 ));
-define('SQL_PATH', dirname(__DIR__, 1) . DS . 'Sql.php');
+define('SQL_DIR', dirname(__DIR__, 1) . DS . 'sql');
+define('QUERY_REPLACE', array('1', '2', '3', '4', '5', '6', '7'));
 define('PUBLIC_DIR', dirname(__DIR__, 2) . DS . 'public_html' . DS . 'xlam318');
 define('UNPUBLIC_DIR', dirname(__DIR__, 1));
 define('ARCHIVE_FILE', dirname(__DIR__, 2) . DS . 'files.tar.gz');
+// TODO
+define('ARCHIVE_DATABASE', dirname(__DIR__, 2) . DS . 'mydatabase.sql');
 define('HOME_PAGES', array(
     'home_1' => array(
         'home_page'    => '6',

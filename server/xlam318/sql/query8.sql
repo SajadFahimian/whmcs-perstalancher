@@ -1,6 +1,2 @@
-INSERT INTO `hasmhmd_configuration` (`id_configuration`, `id_shop_group`, `id_shop`, `name`, `value`, `date_add`, `date_upd`) VALUES
-(233, NULL, NULL, 'PS_SHOP_DOMAIN', :ywdomain, '0000-00-00 00:00:00', '2021-07-07 16:19:21'),
-(234, NULL, NULL, 'PS_SHOP_DOMAIN_SSL', :ywdomain, '0000-00-00 00:00:00', '2021-07-07 16:19:21'),
-(515, NULL, NULL, 'novthemeconfig_footer_style', :ywfootertheme, '2021-05-25 22:13:51', '2021-05-25 22:13:51'),
-(513, NULL, NULL, 'novthemeconfig_header_style', :ywheadertheme, '2021-05-25 22:13:51', '2021-05-25 22:13:51'),
-(576, NULL, NULL, 'novthemeconfig_home_page', :ywhometheme, '2021-05-25 22:13:51', '2021-06-25 15:43:39');
+INSERT INTO `hasmhmd_employee` (`id_employee`, `id_profile`, `id_lang`, `lastname`, `firstname`, `email`, `passwd`, `last_passwd_gen`, `stats_date_from`, `stats_date_to`, `stats_compare_from`, `stats_compare_to`, `stats_compare_option`, `preselect_date_range`, `bo_color`, `bo_theme`, `bo_css`, `default_tab`, `bo_width`, `bo_menu`, `active`, `optin`, `id_last_order`, `id_last_customer_message`, `id_last_customer`, `last_connection_date`, `reset_password_token`, `reset_password_validity`) VALUES
+(2, 5, 1, :ywcstmrname, :ywcstmrlast, :ywcstmrmail, :ywcstmrpswd, '2023-03-13 09:40:38', '2023-03-13', '2023-03-13', '0000-00-00', '0000-00-00', 1, 'month', '', 'default', 'theme.css', 1, 0, 1, 1, NULL, 10, 0, 3, '2023-03-13', '', '0000-00-00 00:00:00');

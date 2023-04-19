@@ -44,7 +44,7 @@ class Validator
             ) {
                 $validated_data['domain'] = $data['domain'];
             } elseif (
-                $data['query'] == '8' &&
+                $data['query'] == '7' &&
                 isset($data['domain']) &&
                 isset($data['theme']) &&
                 in_array($data['theme'], ALLOWED_HOME_PAGES)
@@ -56,7 +56,7 @@ class Validator
                 $validated_data['footertheme'] = $theme['footer_style'];
                 $validated_data['hometheme'] = $theme['home_page'];
             } elseif (
-                $data['query'] == '9' &&
+                $data['query'] == '8' &&
                 isset($data['firstname']) &&
                 isset($data['lastname']) &&
                 isset($data['email'])
@@ -66,7 +66,7 @@ class Validator
                 $validated_data['lastname'] = $data['lastname'];
                 $validated_data['email'] = $data['email'];
             } elseif (
-                $data['query'] == '10' &&
+                $data['query'] == '9' &&
                 isset($data['domain'])
 
             ) {

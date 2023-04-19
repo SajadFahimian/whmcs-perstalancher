@@ -75,7 +75,7 @@ class Controller
                 $query = strtr($query, array('$ywdomain' => $data['domain']));
                 $statement = $dbConnection->prepare($query);
                 $statement->execute();
-            } elseif ($data['query'] == '8') {
+            } elseif ($data['query'] == '7') {
                 $statement = $dbConnection->prepare($query);
                 $statement->execute(array(
                     'ywdomain' => $data['domain'],
@@ -83,7 +83,7 @@ class Controller
                     'ywfootertheme' => $data['footertheme'],
                     'ywhometheme' => $data['hometheme']
                 ));
-            } elseif ($data['query'] == '9') {
+            } elseif ($data['query'] == '8') {
                 $config_array = require CONFIG_PATH;
                 $cookie_key = $config_array['parameters']['cookie_key'];
                 $ywcstmrpswd = md5($cookie_key . $data['password']);
@@ -94,7 +94,7 @@ class Controller
                     'ywcstmrmail' => $data['email'],
                     'ywcstmrpswd' => $ywcstmrpswd
                 ));
-            } elseif ($data['query'] == '10') {
+            } elseif ($data['query'] == '9') {
                 $statement = $dbConnection->prepare($query);
                 $statement->execute(array(
                     'ywdomain' => $data['domain']
